@@ -1,0 +1,81 @@
+basePath: /api/v1
+definitions:
+  handlers.errResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handlers.userResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.User'
+        type: array
+    type: object
+  model.User:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      is_active:
+        type: boolean
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: scripter@demo.com
+    name: scripter_js
+    url: githib.com/abubakar-sadiq001
+  description: sample description
+  title: API Documentation
+  version: "1"
+paths:
+  /users:
+    get:
+      description: return list of all users from the database
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.userResponse'
+      security:
+      - bearerToken: []
+      summary: return list of all
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: create new user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.errResponse'
+      security:
+      - bearerToken: []
+      summary: create new user
+      tags:
+      - Users
+securityDefinitions:
+  bearertoken:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
